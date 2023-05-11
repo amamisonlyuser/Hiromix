@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<br>
+<br>
+<br>
+
+<div class="container">
+    <div class="row center">
+        <div class="col-md-6 offset-md-3">
+            <h2>Create new poll</h2>
+            
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <div><button type="submit" class="btn btn-primary">Add Poll</button>
+                <a  href="{% url 'polls:list' %}" role="button">Back</a></div>
+               
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

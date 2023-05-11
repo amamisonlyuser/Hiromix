@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<header style="color: #ffffff">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hiromix</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+        
+    
+    <link rel="stylesheet" href="{% static 'css/polls_ok.css'%}">
+    <link rel="stylesheet" href="{% static 'css/papu.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+	
+<ul style="margin-right: 0; padding: 10px">
+    <li ><h3><a  href="{% url 'polls:list' %}">Hiromix</a></h3>	</li>
+    {% if not user.is_authenticated %}
+    <ul>
+        <li><a href="{% url 'accounts:login' %}">Login</a></li>
+    </ul>
+    {% endif %}
+    <li><a href="{% url 'polls:add' %}" >Create Poll</a></li>
+    <li><a  href="{% url 'polls:list' %}">Top polls</a></li>
+    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+   
+    
+</ul>
+</header>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+    body {
+  background-color: #000000;
+}
+@media only screen and (max-width:500px){
+  html,body{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  
+
+}}
+p, h1, h2, h3, h4, h5, h6, span {
+  color: #ffffff;
+}
+/* Set color of text to white */
+
+
+/* Set color of links to a light blue */
+a {
+  color: #fcff3e;
+}
+
+/* Set color of visited links to a darker blue */
+a:visited {
+  color: #dbd032;
+}
+
+/* Set color of active/hover links to a light gray */
+a:hover, a:active {
+  color: #ffe343;
+}
+
+/* Set background color of buttons to a light blue */
+button {
+  background-color: #d6b524;
+  color: #000;
+
+  
+}
+
+/* Set background color of form fields to a light gray */
+input[type=text], input[type=password], input[type=email], select {
+  background-color: #5a5a5a;
+  color: #000;
+}
+
+/* Set background color of form submit button to a darker blue */
+input[type=submit] {
+  background-color: #757575;
+  color: #000000;
+}
+
+/* Set background color of navigation menu to a dark gray */
+nav {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Set background color of navigation menu links to a light gray */
+nav a {
+  background-color: #555;
+  color: #fff;
+}
+
+/* Set background color of navigation menu active links to a lighter gray */
+nav a.active {
+  background-color: #777;
+  color: #fff;
+}
+    header{
+        position: fixed;
+        top:2px;
+        left:5%;
+        width:70%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: 0.6s;
+        right: 20px;
+        z-index: 100000;
+        background-color: #1b1b1b;
+        color: #ffffff;
+        position: sticky;
+    }    
+    header,ul{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }    
+    header, ul ,li{
+        position: relative;
+        list-style-type: none;
+    }
+    header ,ul ,li ,a{
+        position: relative;
+        margin: 0 10%;
+        text-decoration: none;
+        color: #fffefe;
+        letter-spacing: 2px;
+        font-weight: 500px;
+        transition: 0.5s;
+        margin-right: 20%;
+        color: #ffffff;
+    }
+
+  
+</style>
+    {% block custom_css %}{% endblock custom_css %}
+
+
+
+<body>
+   
+
+    {% block content %}
+
+    {% endblock content %}
+
+</body>
+
+</html>

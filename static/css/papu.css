@@ -1,0 +1,125 @@
+#papu {
+  animation: progress 1000ms ease-in 1;
+}
+
+@keyframes progress {
+  from {
+      width: 0;
+  }
+}
+
+@keyframes progress-reverse {
+  to {
+      width: 0;
+  }
+}
+@keyframes progress-reverse {
+  to {
+      width: 0;
+  }
+}
+
+
+ #result{
+    color: #ffffff;
+    width: 1500px;
+    padding-left: 20px;
+    padding-top: 10px;
+    height: 20px;
+    font-weight: 650;
+   
+  }
+ .choice-container {
+    margin-bottom: 20px;
+  }
+
+
+  .comments-list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .comment-box {
+    background-color: #000000;
+    border: 1px solid #ffe136;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+  .comment-text {
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  .comment-info {
+    font-size: 20px;
+    margin-top: 0px;
+    color: #ac6464;
+  }
+
+
+
+
+  .btn {
+    transition-duration: 0.2s;
+    }
+    
+    .btn:hover {
+    background-color: #173679; /* Green */
+    color: rgb(255, 255, 255);
+    border-color: #383838
+    ;
+    }
+
+ 
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.effect-1 {
+  border: none;
+  border-bottom: 2px solid rgb(255, 255, 255);
+  width: 60%;
+  overflow: hidden;
+  outline: none;
+  transition: border-bottom 0.4s ease-in-out;
+  background: #252525;
+} 
+
+.effect-1:focus {
+  border-bottom: 2px solid #ffffff;
+}
+
+.focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.4s;
+}
+
+.effect-1:focus ~ .focus-border {
+  width: 100%;
+  left: 0;
+}
+#popupMenu {
+  position: absolute;
+  display: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+#popupMenu a {
+  display: block;
+  color: #333;
+  text-decoration: none;
+  padding: 5px;
+}
+
+#popupMenu a:hover {
+  background-color: #f2f2f2;
+}

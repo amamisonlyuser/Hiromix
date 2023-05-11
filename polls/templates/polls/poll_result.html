@@ -1,0 +1,243 @@
+
+{% extends 'base.html' %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+{% load static %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/papu.css' %}">
+{% endblock custom_css %}
+{% block content %}
+<br>
+<br>
+
+<div  style="border: 0.5px #ffffff solid; width : 2000px ;height: 1px; border-bottom: none;"></div>
+<div style="border: 0.5px #e9e9e9 solid;position: absolute; top: 13.6%; bottom: 0; left: 7%; width: .5px; background-color: #c5c5c5; height: 2000px;"></div>
+<div style="border: 0.5px #e2e2e2 solid;position: absolute; top: 13.6%; bottom: 0; right: 1%;left: 110%; width: .5px; background-color: #c5c5c5; height: 2000px;"></div>
+<div class="container" style="border: 2px #333; margin-left: 20%;" >
+
+  <div class="row">
+    <div class="col-md-8 offset-sm-2">
+  
+      
+      <!-- progress bar -->
+     <br>
+      <div style="align-items: center;margin-left: 5%;margin-right: auto;">
+        <h4 >{{ poll.text }}</h4>
+       
+        <div>
+          {% if poll.image %}
+          <img src="{{ poll.image.url }}" alt="{{ poll.text }}" style="height:200px; width: 200px;margin-bottom:10px;border-radius:3px;">
+          {% endif %}
+        </div>
+        {% for choice in poll.get_result_dict %}
+        {% if choice.percentage > 50 %}
+        <div role="progressbar" style="margin-top:3px;width: 70%; height: 62px; position:relative;background-color: #292828;border: 0px #333 solid;padding: 0px;border-radius: 10px;">
+          <div class="color-item" id="papu" role="progressbar" style="background-color: rgb(61, 168, 141);width:{{ choice.percentage }}%;border-radius: 6px; height: 60px; position:relative; ">
+            <div id="result" role="progressbar">{{choice.text}}</div> 
+            <div id="result" class="num" role="progressbar" data-val="{{choice.percentage|floatformat}}">1</div>
+          </div>
+        </div>
+        {% else %}
+        
+        <div role="progressbar" style="margin-top:3px;width: 70%; height: 62px; position:relative;background-color: #222222;border: 0px #333 solid;padding: 0px;border-radius: 10px;">
+          <div class="color-item" id="papu" role="progressbar" style="background-color: rgb(194, 10, 10);width:{{ choice.percentage }}%;border-radius: 6px; height: 60px; position:relative;">
+            <div id="result" role="progressbar">{{choice.text}}</div>
+            <div id="result" class="num" role="progressbar" data-val="{{choice.percentage|floatformat}}">1</div>
+          </div>
+        </div>
+        
+        {% endif %}
+        {% endfor %}
+         <div style="margin-left: 2%;"><h6>{{ poll.get_vote_count }} votes</h6></div>
+        <br>
+    <div style="margin-left:17% "> <h6>Comments:</h6></div>
+    <form id="comment-form" method="POST" action="{% url 'polls:comments' poll.id %}">
+      {% csrf_token %}
+       <textarea class="effect-1" oninput="auto_grow(this)" id="comment-input" name="comment"  style="background-color: #252525; color: #ffffff;"></textarea>
+        
+      <button  id="refreshBtn" type="submit"  class="btn" style="border: #ffffff; border-radius: 13px; font-weight: 400; justify-items: center;">Send</button>
+    </form>
+    <div id="commentdisplay" style="position:relative;font-size: 24px; "></div>
+    <div class="comments-list" style="display:flex;justify-content:center;flex-direction:column;margin-top:20px;"></div>
+    
+    
+         {% for comment in comments.all %}
+          
+        
+          
+            <div class="comment-box" style="color:#ffffff; background-color:#000000; border:1px solid #d8d8d8; border-radius:10px; margin-bottom:10px; padding:10px; width:70%;">
+            <p>{{ comment.user.username }}</p>
+            <p class="comment-info" style="font-size: 15px;margin-top:0px;color:#ffffff;">{{ comment.text }}</p>
+            {% if comment.user == request.user %}
+              <form method="post" action="{% url 'polls:delete_comment' comment.id %}">
+                {% csrf_token %}
+                <button id="refreshBtn" type="submit" class="btn" style="border: #ffffff; border-radius: 13px; font-weight: 400; justify-items: center;">Delete</button>
+              </form>
+            {% endif %}
+          </div>
+          
+  {% endfor %}
+      <h1>{% for choice in winners %}
+        <tr>
+          <td>{{ choice.choice_text }}</td>
+          <td>{{ choice.num_votes }}</td></h1>{{context}}
+     </div>
+            {% endfor %}
+     <a href="{% url 'polls:list' %}" class="button" role="button"  style="bottom: 1%;">Back To Polls</a>
+    
+     
+     
+    <!-- Render comment form -->
+    <script>
+      const winners = [{% for choice in context.winners %}'{{ choice.choice_text }}', {% endfor %}];
+      const losers = [{% for choice in context.losers %}'{{ choice.choice_text }}', {% endfor %}];
+      const winner_users = [{% for user in context.winner_users %}'{{ user }}', {% endfor %}];
+      const loser_users = [{% for user in context.loser_users %}'{{ user }}', {% endfor %}];
+    
+    
+    </script>
+     
+  <script>
+    document.getElementById('comment-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const commentInputDom = document.querySelector('#comment-input');
+      const comment = commentInputDom.value;
+      commentSocket.send(JSON.stringify({
+        'comment': comment,
+      }));
+      commentInputDom.value = '';
+    });
+  
+    const pollId = {{ poll.id }};
+    const commentSocket = new WebSocket(
+      'ws://' + window.location.host +
+      '/ws/comment/' + pollId + '/'
+    );
+  
+    commentSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      const commentDisplayDom = document.querySelector('#commentdisplay');
+      const commentBoxDom = document.createElement('div');
+      commentBoxDom.className = 'comment-box';
+      commentBoxDom.style.backgroundColor = '#000000';
+      commentBoxDom.style.width = '50%';
+      commentBoxDom.style.border = '1px solid #d8d8d8';      
+      commentBoxDom.style.borderRadius = '10px';
+      commentBoxDom.style.marginBottom = '10px';
+      commentBoxDom.style.padding = '10px';
+      const usernameDom = document.createElement('p');
+      usernameDom.innerText = data.username;
+      const commentDom = document.createElement('p');
+      commentDom.innerText = data.comment;
+      commentDom.className = 'comment-info';
+      commentDom.style.fontSize = '20px';
+      commentDom.style.marginTop = '0px';
+      commentDom.style.color = '#ffffff';
+      commentBoxDom.appendChild(usernameDom);
+      commentBoxDom.appendChild(commentDom);
+      commentDisplayDom.appendChild(commentBoxDom);
+    };
+  </script> 
+   <script>
+    let valueDisplays = document.querySelectorAll(".num");
+      let interval = 1200;
+      valueDisplays.forEach((valueDisplay) => {
+        let startValue = 0;
+        let dynamicText = valueDisplay.getAttribute("data-text");
+        let endValue = parseInt(valueDisplay.getAttribute("data-val"));
+        let duration = Math.floor(interval / endValue);
+        let counter = setInterval(function () {
+          startValue += 1;
+          valueDisplay.textContent =  startValue +"%";
+          if (startValue >= endValue) {
+            clearInterval(counter);
+          }
+  
+        }, duration);
+      });
+      function auto_grow(element) {
+    element.style.height = "5px";
+    element.style.height = (element.scrollHeight)+"px";
+        
+}
+      </script>
+       	
+<script>
+  // Get the button element
+  var refreshBtn = document.getElementById("refreshBtn");
+
+  // Add event listener to the button
+  refreshBtn.addEventListener("click", function() {
+    // Reload the current page
+    location.reload();
+  });
+</script>
+<script>
+  // Get the progress bar element
+  var progressBar = document.getElementById("papu");
+
+  // Check if the user has already seen the animation
+  if (!localStorage.getItem("animationHasRun")) {
+    // Add a class to the progress bar element to trigger the animation
+    progressBar.classList.add("animate");
+
+    // Store a flag in local storage to indicate that the animation has run
+    localStorage.setItem("animationHasRun", true);
+  }
+</script>
+ </div>
+  </div>
+</div>
+</div>
+
+</div>
+<style>
+  .effect-1 {
+      border: none;
+      border-bottom: 1px solid rgb(255, 255, 255);
+      width: 60%;
+      overflow: hidden;
+      outline: none;
+      transition: border-bottom 0.1s ease-in-out;
+  }
+
+  .effect-1:focus {
+      border-bottom: 2px solid #f1ff34;
+  }
+
+ 
+
+  .effect-1:focus ~ .focus-border {
+      width: 55%;
+      left: 6%;
+  }
+</style>
+ 
+
+{% endblock content %}                  
+    
+    
+    
+  
+  
+
+    
+        
+
+   
+             
+    
+
+
+
+
+
+  
+   
+
+   
+
+       
