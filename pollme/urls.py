@@ -18,7 +18,7 @@ from django.urls import path, include , re_path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.conf.urls import serve
 
 
 urlpatterns = [
@@ -26,7 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls', namespace="accounts")),
     path('polls/', include('polls.urls', namespace="polls")),
-    
+    re_path(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}), 
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
     
    
     
