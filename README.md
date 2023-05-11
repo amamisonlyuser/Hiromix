@@ -1,7 +1,7 @@
 # Hiromix
 <h2>Installing</h2>
 <pre>open terminal and type</pre>
-<code>git clone https://github.com/devmahmud/Django-poll-app.git</code><br><br>
+<code>git clone https://github.com/amamisonlyuser/Hiromix.git</code><br><br>
 
 <h2>To migrate the database open terminal in project directory and type</h2>
 <code>python manage.py makemigrations</code><br>
