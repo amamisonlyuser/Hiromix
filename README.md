@@ -3,12 +3,16 @@
 <pre>open terminal and type</pre>
 <code>git clone https://github.com/amamisonlyuser/Hiromix.git</code><br><br>
 
+<h2>Install django and daphne</h2>
+<code>pip install django</code><br>
+<code>pip install daphne</code>
+
+
 <h2>To migrate the database open terminal in project directory and type</h2>
 <code>python manage.py makemigrations</code><br>
 <code>python manage.py migrate</code>
 
-<h2>To use admin panel you need to create superuser using this command </h2>
-<code>python manage.py createsuperuser</code>
+
 
 
 
