@@ -3,10 +3,13 @@
 <pre>open terminal and type</pre>
 <code>git clone https://github.com/amamisonlyuser/Hiromix.git</code><br><br>
 
-<h2>Install django , channels and daphne</h2>
+<h2>Install django , redis ,pillow, django-redis,channels , daphne</h2>
 <code>pip install django</code><br>
-<code>pip install daphne</code>
-<code>pip install channels</code>
+<code>pip install redis</code><br>
+<code>pip install pillow</code><br>
+<code>pip install django-redis</code><br>
+<code>pip install channels</code><br>
+<code>pip install daphne</code><br>
 
 
 <h2>To migrate the database open terminal in project directory and type</h2>
